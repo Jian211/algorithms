@@ -1,4 +1,4 @@
-package algorithms02;
+package _02;
 
 public class Fibonacci {
 

@@ -1,4 +1,4 @@
-package algorithms01;
+package _01;
 
 import java.util.ArrayList;
 import java.util.Scanner;

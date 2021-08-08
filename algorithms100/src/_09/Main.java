@@ -13,7 +13,10 @@ public class Main {
 		}
 		System.out.println(sum);
 		
-	
+		//숫자 --> 문자
+		String chc = Integer.toString(1234);
+		System.out.println((chc));
+		
 	}
 
 }

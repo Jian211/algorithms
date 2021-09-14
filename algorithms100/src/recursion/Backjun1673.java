@@ -9,8 +9,14 @@ package recursion;
 
 public class Backjun1673 {
 
-	static void ateChicken ( int ticket, int ) {
-		
+	static int ateChicken ( int ticket, int coupang) {
+		System.out.println("ticket" + ticket);
+		System.out.println("ticket/coupang" + ticket/coupang);
+		if(ticket/coupang < 5) {
+			System.out.println("5보다작은"+ticket/coupang);
+			return ticket/coupang;
+		}
+		return ticket + ateChicken(ticket/coupang,coupang);
 	}
 	
 	public static void main(String[] args) {
@@ -19,6 +25,7 @@ public class Backjun1673 {
 		int stamp = 5;
 		int count = 0;
 		int chicken = 0;
+		System.out.println(ateChicken(coupon,stamp));
 		//그니까 치킨을 쿠폰한장(치킨하나)에 도장 1개
 		while (coupon > 0) {
 			coupon--;
@@ -30,7 +37,6 @@ public class Backjun1673 {
 			}
 		}
 		System.out.println(chicken);
-		
 	
 	}
 }

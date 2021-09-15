@@ -10,11 +10,8 @@ package recursion;
 public class Backjun1673 {
 
 	static int ateChicken ( int ticket, int coupang) {
-		System.out.println("ticket" + ticket);
-		System.out.println("ticket/coupang" + ticket/coupang);
-		if(ticket/coupang < 5) {
-			System.out.println("5보다작은"+ticket/coupang);
-			return ticket/coupang;
+		if(ticket/coupang < coupang) {
+			return ticket + ticket/coupang;
 		}
 		return ticket + ateChicken(ticket/coupang,coupang);
 	}
@@ -23,10 +20,11 @@ public class Backjun1673 {
 		// 간단히 짜본 것.
 		int coupon = 100;
 		int stamp = 5;
+		// 재귀활용
+		System.out.println(ateChicken(coupon,stamp));
 		int count = 0;
 		int chicken = 0;
-		System.out.println(ateChicken(coupon,stamp));
-		//그니까 치킨을 쿠폰한장(치킨하나)에 도장 1개
+		// 일반적인 방법
 		while (coupon > 0) {
 			coupon--;
 			chicken++;

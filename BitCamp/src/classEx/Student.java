@@ -2,11 +2,11 @@ package classEx;
 
 public class Student {
 
-	public int id;
-    public String name;
-    public int korean;
-    public int english;
-    public int math;
+	public static int id;
+    public static String name;
+    public static int korean;
+    public static int english;
+    public static int math;
     public final int SUBJECT_SIZE = 3;
 
     // 1. calculateSum()
@@ -67,4 +67,9 @@ public class Student {
         }
         return false;
     }
+    
+    public String toString() {
+    	return "학생 번호: "+id+", 학생 이름: "+name+", 국어점수: "+ korean +", 영어점수 :"+english+", 수학점수 : "+math ;
+    }
 }
+

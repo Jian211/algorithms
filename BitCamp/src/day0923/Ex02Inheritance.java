@@ -3,6 +3,7 @@ package day0923;
 import classEx.Animal;
 import classEx.Gorilla;
 import classEx.Monkey;
+import classEx.Student;
 
 /*
  	상속 (Inheritance)이란,
@@ -65,8 +66,16 @@ public class Ex02Inheritance {
 		Animal g3 = new Gorilla();
 		
 		// 객체를 println()에 넣으면 어떻게 될까?
+		// println()에 파라미터로 String 클래스가 아닌 객체가 들어가게 된다면,
+		// 그 클래스 객체의 toString() 메소드가 실행되어서 리턴된다.
+		
+		// 만약 별다른 toString() 오버라이드를 하지 않았을 경우
+		// 패키지.객체 클래스 @ 힙 메모리 주소값
+		// 이 리턴되어 출력된다.
 		System.out.println(g);
 		System.out.println(g2);
 		System.out.println(g3);
+		Student stu = new Student();
+		System.out.println(stu);
 	}
 }

@@ -8,27 +8,45 @@ import model.RatingDTO;
 public class RatingController {
 	private RatingDTO ratingDTO;
 	private int nextId;
-	private static ArrayList<RatingDTO> ratingList;
+	private static ArrayList<RatingDTO> ratingList = new ArrayList<>();;
 	
 	public void ratingConnection() {
 		ratingDTO = new RatingDTO();
-		ratingList = new ArrayList<>();
 		nextId = 1;
 		
 		ratingDTO.setMovieId(1);
-		ratingDTO.setId(0);
+		ratingDTO.setId(nextId);
 		ratingDTO.setReviewerRating(randomNum());
 		
 		ratingList.add(ratingDTO);
 		
 		for (int i = 2; i <= 9; i++) {
-			ratingDTO.setMovieId(i);
-			ratingDTO.setId(nextId++);
-			ratingDTO.setUserRating(randomNum());
+			RatingDTO temp = new RatingDTO();
+			temp.setWriterId(i);
+			temp.setMovieId(i);
+			temp.setId(nextId++);
+			temp.setUserRating(randomNum());
 			
-			ratingList.add(ratingDTO);
+			ratingList.add(temp);
 		}
 	}
+	
+	public double getUserRatingAvg(int movieId) {
+		int cnt = 0;
+		int sum = 0;
+		for(RatingDTO r : ratingList) {
+			if(r.getMovieId() == movieId) {
+				sum += r.getUserRating();
+				cnt++;
+			}
+		}
+		
+		if(sum == 0) return 0;
+		
+		double avg = (double)sum/cnt;
+		return avg;
+	}
+	
 	public void show(int movieId){
 		ArrayList<RatingDTO> idList = new ArrayList<>();
 		for(RatingDTO r : ratingList) {
@@ -40,12 +58,6 @@ public class RatingController {
 		for (int i = 0; i < idList.size(); i++) {
 			System.out.println(idList.get(i).getUserRating());
 		}
-	}
-	
-	public double ratingAvg() {
-		
-		
-		return 0.1;
 	}
 	
 	public int randomNum() {
@@ -72,6 +84,16 @@ public class RatingController {
 		return ratingDTO.getReviewerRating();
 	}
 
+	public int getRating(int writerId) {
+		for(RatingDTO r : ratingList) {
+			if(r.getWriterId() == writerId) {
+				return r.getUserRating();
+			}
+		}
+		
+		return 1;
+	}
+	
 	public int getUserRating(int movieId) {
 		RatingDTO temp = selectOne(movieId);
 		return temp.getUserRating();

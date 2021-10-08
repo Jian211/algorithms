@@ -1,5 +1,6 @@
 package viewer;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import controller.LoggerController;
@@ -67,11 +68,22 @@ public class TheaterViewer {
 			theaterController.removeAllTheaterMovies(theaterId);
 		}
 		else if(userChoice == 2) {
-			theaterController.removeTheaterMovie(theaterId);			
+			int max = theaterController.theaterMoviesSize(theaterId);
+			ArrayList<Integer> deleteList = new ArrayList<>();
+			while(true) {
+				message = "삭제하고자 하는 번호를 하나씩 입력해주세요. 없으시면 0을 입력해주세요.";
+				userChoice = ScannerUtil.nextInt(scanner, message,0,max);
+				if(userChoice != 0) {
+					deleteList.add(userChoice-1);
+				}else if(userChoice == 0){
+					break;
+				}
+			}
+			theaterController.removeTheaterMovie(deleteList, theaterId);	
+			System.out.println("삭제가 완료되었습니다.");
 		}
 		info();		
 	}
-
 
 	private void managerAddTheater() {
 		String message = new String("새로운 상영정보를 등록하실 극장의 번호를 입력해주세요.");
@@ -92,11 +104,22 @@ public class TheaterViewer {
 		info();		
 	}
 
-
 	private void manageRemoveTheater() {
 		String message = new String("삭제하시려는 극장의 번호를 입력해주세요.");
 		int theaterId = ScannerUtil.nextInt(scanner, message);
-		theaterController.removeTheater(theaterId);
+		
+		message = "정말로 삭제하시겠습니까? y/n";
+		String yesNo = ScannerUtil.nextLine(scanner, message);
+		if(yesNo.equalsIgnoreCase("y")) {
+			if(!theaterController.removeTheater(theaterId)) {
+				System.out.println("해당 상영관은 존재하지 않습니다.");
+			}else{
+				System.out.println("삭제되었습니다.");
+			}
+		}else {
+			System.out.println("삭제가 취소되었습니다.");
+		}
+		
 		info();
 	}
 
@@ -104,7 +127,17 @@ public class TheaterViewer {
 	private void managerEditTheater() {
 		String message = new String("수정하시려는 극장의 번호를 입력해주세요.");
 		int theaterId = ScannerUtil.nextInt(scanner, message);
-		theaterController.editTheater(theaterId);
+		
+		message = "수정할 로케이션의 정보를 입력해주세요";
+		String location = ScannerUtil.nextLine(scanner, message);
+		
+		message = "수정할 영화관의 이름정보를 입력해주세요";
+		String name = ScannerUtil.nextLine(scanner, message);
+
+		message = "수정할 phone Number 정보를 입력해주세요";
+		String phone = ScannerUtil.nextLine(scanner, message);
+		theaterController.editTheater(theaterId,location,name,phone);
+		System.out.println("수정 완료되었습니다.");
 		info();		
 	}
 

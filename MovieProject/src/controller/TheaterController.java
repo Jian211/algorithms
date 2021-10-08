@@ -2,15 +2,12 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 
 import model.MovieDTO;
 import model.TheaterDTO;
-import util.ScannerUtil;
 
 public class TheaterController {
     private static ArrayList<TheaterDTO> theaterList = new ArrayList<>();
-    private Scanner scanner = new Scanner(System.in);
     private MovieController movieController;
 	private int nextId;
     
@@ -53,11 +50,15 @@ public class TheaterController {
     }
     	
 	public void printAll() {
-		System.out.println("============= 영화관 목록 =============");
-		for(TheaterDTO temp : theaterList) {
-			printOne(temp);
+		if(theaterList.size() == 0) {
+			System.out.println("현재 등록된 영화관이 없습니다.");
+		} else {
+			System.out.println("============= 영화관 목록 =============");
+			for(TheaterDTO temp : theaterList) {
+				printOne(temp);
+			}
+			System.out.println("====================================");
 		}
-		System.out.println("====================================");
 	}
 
 	public void printTheaterInfo(int theaterId) {
@@ -90,38 +91,25 @@ public class TheaterController {
 		}
 			
 	}
-	public void editTheater(int theaterId) {
+	public void editTheater(int theaterId, String location, String name, String phone) {
 		TheaterDTO temp = selectOne(theaterId);
-		int index = theaterList.indexOf(temp);
-		
-		String message = "수정할 로케이션의 정보를 입력해주세요";
-		String location = ScannerUtil.nextLine(scanner, message);
-		
-		message = "수정할 영화관의 이름정보를 입력해주세요";
-		String name = ScannerUtil.nextLine(scanner, message);
-
-		message = "수정할 phone Number 정보를 입력해주세요";
-		String phone = ScannerUtil.nextLine(scanner, message);
-		
+		int index = theaterList.indexOf(temp);		
 		temp.setLocation(location);
 		temp.setName(name);
 		temp.setPhoneNumber(phone);
-		
 		theaterList.set(index, temp);
-		System.out.println("수정 완료되었습니다.");
 	}
 
-	public void removeTheater(int theaterId) {
+	public boolean removeTheater(int theaterId) {
 		TheaterDTO temp = selectOne(theaterId);
-		int index = theaterList.indexOf(temp);
+		if(theaterList.size() == 0) 	return false;
 		
-		String message = "정말로 삭제하시겠습니까? y/n";
-		String yesNo = ScannerUtil.nextLine(scanner, message);
-		if(yesNo.equalsIgnoreCase("y")) {
+		else if(temp == null)	return false;
+		
+		else {
+			int index = theaterList.indexOf(temp);
 			theaterList.remove(index);
-			System.out.println("삭제되었습니다.");
-		}else {
-			System.out.println("삭제가 취소되었습니다.");
+			return true;
 		}
 	}
 	
@@ -132,23 +120,14 @@ public class TheaterController {
 		temp.setTheaterMovies(null);
 		theaterList.set(index, temp);
 	}
+	public int theaterMoviesSize(int theaterId) {
+		return selectOne(theaterId).getTheaterMovies().length;
+	}
+	
 	// 기존 상영정보 부분삭제
-	public void removeTheaterMovie(int theaterId) {
+	public void removeTheaterMovie(ArrayList<Integer> deleteList, int theaterId) {
 		TheaterDTO temp = selectOne(theaterId);
-		int max = temp.getTheaterMovies().length;
 		int index = theaterList.indexOf(temp);
-		ArrayList<Integer> deleteList = new ArrayList<>();
-		
-		while(true) {
-			String message = "삭제하고자 하는 번호를 하나씩 입력해주세요. 없으시면 0을 입력해주세요.";
-			int userChoice = ScannerUtil.nextInt(scanner, message,0,max);
-			if(userChoice != 0) {
-				deleteList.add(userChoice-1);
-			}else if(userChoice == 0){
-				break;
-			}
-		}
-		
 		int [] arr = temp.getTheaterMovies();
 		
 		for (int i = 0; i < deleteList.size(); i++) {

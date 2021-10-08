@@ -13,8 +13,10 @@ public class CommentController {
 	private static Calendar cal = Calendar.getInstance();
 	private SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 	private int nextId;
+	private RatingController ratingController;
 	
 	public void commentConnection() {
+		ratingController = new RatingController();
 		commentList = new ArrayList<>();
 		commentDTO = new CommentDTO();
 		nextId = 1;
@@ -36,7 +38,7 @@ public class CommentController {
 			temp.setMovieId(i);
 			temp.setWriterId(i);
 			temp.setComment(i +"hello");
-			temp.setCommentId(i);
+			temp.setCommentId(nextId++);
 			temp.setTitle("title"+i);
 			temp.setWriterRank(1);
 			temp.setWrittenTime(sdf.getCalendar());
@@ -50,12 +52,6 @@ public class CommentController {
 		commentList.add(temp);
 	}
 	
-	// 확인차 만든 메소드
-	public void printAll() {
-		for(CommentDTO c : commentList) {
-			System.out.println(c.getWriterRank());
-		}
-	}
 	
 	public String getReviewerComment(int movieId) {
 		for(CommentDTO c : commentList) {
@@ -67,6 +63,7 @@ public class CommentController {
 		
 	}
 	
+	
 	public String getUserComment(int movieId) {
 		for(CommentDTO comm : commentList) {
 			if(comm.getWriterRank() == 1 && comm.getMovieId() == movieId){
@@ -77,6 +74,7 @@ public class CommentController {
 	}
 
 	public void addUserComment(int movieId, int loggerId, String title, String comment) {
+	
 		CommentDTO temp = new CommentDTO();
 		temp.setComment(comment);
 		temp.setCommentId(nextId++);
@@ -88,7 +86,40 @@ public class CommentController {
 		temp.setUpdatedTime(cal.getInstance());
 		
 		commentList.add(temp);
-		System.out.println("유저 코맨드 만들기");
+	}
+	
+	public CommentDTO selectOne(int movieId) {
+		for(CommentDTO c : commentList) {
+			if(c.getMovieId() == movieId) {
+				return c;
+			}
+		}
+		return null;
+	}
+	public void printMovieComments(int movieId) {
+		int cnt = 1;
+		for(CommentDTO c : commentList) {
+			if(c.getMovieId() == movieId) {
+				int writerRating = ratingController.getRating(c.getWriterId());
+				System.out.println("=========================================");
+				System.out.printf("[%d] - %s -  평점 : %s \n",cnt++, c.getTitle(), writerRating);
+				System.out.println(c.getComment());
+				System.out.println("=========================================");
+			}
+		}
+	}
+	
+	public void printAll() {
+		for(CommentDTO c : commentList) {
+			System.out.printf("[%d] - %s - %s \n",c.getCommentId(), c.getTitle(), c.getWriterRank());
+			System.out.println(c.getComment());
+		}
+	}
+	
+	public void printOne(int movieId) {
+		CommentDTO temp = selectOne(movieId);
+		System.out.printf("[%d] - %s - %s \n",temp.getCommentId(),temp.getTitle(),temp.getWriterRank());
+		System.out.println(temp.getComment());
 	}
 
 }

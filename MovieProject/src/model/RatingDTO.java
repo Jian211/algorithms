@@ -8,7 +8,6 @@ public class RatingDTO {
 	private int reviewerRating;
 	
 	public RatingDTO() {
-		System.out.println("¿©±â?");
 	}
 	
 	public int getId() {

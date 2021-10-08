@@ -49,20 +49,14 @@ public class MovieController {
 	
 	// 일반인, 전문가 평점, 영화 제목 
 	public void printSelectedMovie(int movieId) {
-		System.out.println("요기");
 		ratingController.show(movieId);
 		String      movieTitle = mvList.get(movieId-1).getTitle();
 		int	    reveiwerRating = ratingController.getReviewerRating(movieId);
-		String reviewerComment = commentController.getReviewerComment(movieId);
-		
-		// 생각해보니 평균으로 만들어야함.
-		int      userRating = ratingController.getUserRating(movieId);
-		String     userComment = commentController.getUserComment(movieId);
+		double      userRating = ratingController.getUserRatingAvg(movieId);
 		
 		System.out.println("=====================================");
 		System.out.printf(" %d [ %s ]\n", movieId, movieTitle);
-		System.out.printf("[ Reviewer ] %d점 - %s -\n",reveiwerRating, reviewerComment);
-		System.out.printf("[   User   ] %d점 - %s -\n",userRating, userComment);
+		System.out.printf("[ Reviewer : %d점 ]  [ User : %.1f점 ]\n",reveiwerRating, userRating);
 		
 	}
 	public String getMovieTitle(int movieId) {
@@ -76,11 +70,11 @@ public class MovieController {
 		String movieTitle = selectOne(movieId).getTitle();
 		//평점 찾기
 		int reviewerRating = ratingController.getReviewerRating(movieId);
-		int userRating = ratingController.getUserRating(movieId);
+		double userRating = ratingController.getUserRatingAvg(movieId);
 
 		System.out.printf("%d의 영화 [ %s ]의 평점은\n",movieId,movieTitle);
-		System.out.printf("유저 평점   [ %d]입니다.\n",reviewerRating);
-		System.out.printf("리뷰어 평점 [ %d]입니다.\n",userRating);
+		System.out.printf("리뷰어 평점 [ %d]입니다.\n",reviewerRating);
+		System.out.printf("유저 평점  [ %.1f]입니다.\n",userRating);
 	}
 	
 	// 영화별 평론가 평점 보기
@@ -94,16 +88,6 @@ public class MovieController {
 		System.out.printf("[ %d점 ] - %s -\n",reviewerRating,comment);
 	}
 	
-	public void printUserComment(int movieId) {
-		String movieTitle = selectOne(movieId).getTitle();
-		// 평론가 펑점 받아오기
-		int userRating = ratingController.getUserRating(movieId);
-		String comment = commentController.getUserComment(movieId);
-		
-		System.out.printf("[ %s ]영화, 유저의 평점 및 평론입니다.\n",movieTitle);
-		System.out.printf("[ %d점 ] - %s -\n",userRating,comment);
-		
-	}
 	public void printOne(int movieId) {
 		MovieDTO temp = selectOne(movieId);
 		System.out.println("["+temp.getId()+"]");

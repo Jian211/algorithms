@@ -131,7 +131,7 @@ public class MovieViewer {
 	private void userRating() {
 		String message = new String("영화의 번호를 입력해주세요.");
 		int movieId = ScannerUtil.nextInt(scanner, message);
-		movieController.printUserComment(movieId);
+		commentController.printMovieComments(movieId);
 		
 		message = new String("해당영화에 평점과 댓글을 작성하시려면 1번, 나가시려면 2번을 입력해주세요.");
 		int userChoice = ScannerUtil.nextInt(scanner, message);
@@ -149,7 +149,6 @@ public class MovieViewer {
 				message = new String("댓글을 입력해주세요.");
 				String comment = ScannerUtil.nextLine(scanner, message);
 				commentController.addUserComment(movieId ,loggerController.getLoggerId(), title ,comment);
-				// 댓글출력
 				
 			} else if(!login){
 				message = new String("로그인을 하셔야 이용가능합니다. 로그인 하시겠습니까? y/n");

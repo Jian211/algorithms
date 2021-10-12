@@ -2,7 +2,7 @@ package study;
 
 public class QuickSortMain {
 	/*
-		퀵소트란? 
+		퀵소트란?  quickSort
 		" 기준이되는(pivot)을 선정 후에 기준점을 시작점과 끝나는 점을 분할비교 "
 		하는 것이다.
 		
@@ -12,59 +12,50 @@ public class QuickSortMain {
 		재귀함수를 통하여, 퀵소트는 만들어진다.
 	
 	 */
-
-	private static void quick(int[] arr, int first, int last) {
-		System.out.printf("\n\n**first %d, last %d\n",first,last);
-		print(arr);
-		
-		if(first >= last) return;
 	
-		//첫번째 인덱스 
-		int pivot = first;
-		int i = first + 1;
-		int j = last;
-		System.out.printf("\npivot = %d \n", arr[pivot]);
+	// 배열을 받아옴,
+	static void quickSort(int [] arr) {
+		//퀵소트는 배열과 처음 값의 인덱스 그리고 마지막 인덱스 값을 넣어준다.
+		quickSort(arr, 0 ,arr.length - 1);
+	}
+
+	static void quickSort(int [] arr, int start , int end) {
+		int pivot = start;
+		int i = start + 1;
+		int h = end;
 		
-		while(i <= j) {
-			while(i <= last && arr[i] <= arr[pivot]) i++;
-			while(j > first && arr[i] >= arr[pivot]) j--;
-			if( i > j ) {
-				System.out.println(arr[pivot]);
-				System.out.println(j);
-				swap(arr,pivot,j);
-			}
-			else swap(arr,i,j);
+		if(start >= end) return;
+		
+		while(i < h) {
+			while(i <= end && arr[i] <= arr[pivot]) i++;
+			while(h > start && arr[h] >= arr[pivot]) h--;
 			
-			System.out.println("swap result");
-			print(arr);
-		} 
-		System.out.println("pivot result");
-		print(arr);
-		
-		quick(arr, first, j - 1);
-		quick(arr, j + 1,  last);
+			if(i > h) {
+				int temp = arr[h];
+				arr[h] = arr[pivot];
+				arr[pivot] = temp;
+			} else {
+				int temp = arr[i];
+				arr[i] = arr[h];
+				arr[h] = temp;
+			}
+			
+			quickSort(arr, start, h - 1);
+			quickSort(arr, h + 1, end);
+		}
+	
 	}
 	
-	private static void swap(int[] arr, int i, int j) {
-		System.out.println("i  :"+ i);
-		System.out.println("j  :"+ j);
-		int temp = arr[i];
-		arr[i] = arr[j];
-		arr[j] = temp;
-	}
-
-	private static void print(int[] arr) {
+	
+	
+	public static void main(String[] args) {
+		int [] arr = {45,12,87,23,57,13,6,78,90,55};
+		
+		quickSort(arr);
+		
 		for (int i = 0; i < arr.length; i++) {
 			System.out.printf("[%d]",arr[i]);
+			
 		}
-		System.out.println();
 	}
-
-	public static void main(String[] args) {
-		System.out.println(" 퀵 정렬을 시작합니다. ");
-		int []arr = {54,34,41,89,67,16,52,23};
-		
-		quick(arr, 0, arr.length-1);
-	}
-
 }
